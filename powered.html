@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRCT - Powered By</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+  <header>
+        <div class="header-inner">
+            <div class="header-left">
+                <img src="KR map Logo.PNG" alt="KRCT Logo" class="logo-small" />
+            </div>
+            <div class="header-center">
+                <img src="logo.jpg" alt="Logo" class="logo-center" />
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="home.html" class="nav-link active">Home</a></li>
+            <li><a href="about.html" class="nav-link">KRCT Campus</a></li>
+           
+            <li><a href="departments.html" class="nav-link">Blocks</a></li>
+             <li><a href="map.html" class="nav-link">Administrative  Block</a></li>
+            <li><a href="powered.html" class="nav-link">Powered By</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- Powered By Section -->
+    <section id="powered">
+        <div class="container" style="text-align:center;padding:var(--spacing-2xl) 0;">
+             <h2 style="color:var(--text-primary);margin-top:0;">Powered By</h2>
+            <img src="tech bros Logo.PNG" width="320" alt="Powered By" style="display:block;margin:0 auto 12px;">
+           
+            <p style="color:var(--text-secondary);margin:6px 0 12px;">Developed &amp; Designed By</p>
+            <p style="color:var(--text-secondary);font-weight:700;margin:0 0 6px;">AFRIDI MOHAMED J, ABILASH J, ABISHEK CHRISTOPHER R</p>
+            <p style="color:var(--text-secondary);margin:0 0 6px;">(Ist Year - CSE), K.Ramakrishnan College Of Technology (KRCT)</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="last">
+        <div class="container">
+            <div class="foot" style="text-align:center;padding-top:12px;">
+                <h6>© 2026 All Rights Reserved.</h6>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.href.includes('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(targetId);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                    // Update active state
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

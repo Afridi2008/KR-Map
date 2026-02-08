@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRCT - Administrative Block</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+   <header>
+        <div class="header-inner">
+            <div class="header-left">
+                <img src="KR map Logo.PNG" alt="KRCT Logo" class="logo-small" />
+            </div>
+            <div class="header-center">
+                <img src="logo.jpg" alt="Logo" class="logo-center" />
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+      <nav class="navbar">
+        <ul class="nav-menu">
+            <li><a href="home.html" class="nav-link active">Home</a></li>
+            <li><a href="about.html" class="nav-link">KRCT Campus</a></li>
+           
+            <li><a href="departments.html" class="nav-link">Blocks</a></li>
+             <li><a href="map.html" class="nav-link">Administrative  Block</a></li>
+            <li><a href="powered.html" class="nav-link">Powered By</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- Departments Section -->
+    <section class="departments" id="departments">
+        <div class="dept-container">
+            <h2>Campus Biomes </h2>
+            <div class="dept-grid">
+                <div class="dept-card">
+                    <h3>Administrative Block</h3>
+                    <p>Principal Office, Admin Office, Library, laboratories, IQAC,CFRD,EDC,COE, Dept Of ( Mech, Civil, IT ) And Their Classes...</p>
+                   
+                </div>
+                <div class="dept-card">
+                    <h3>Circuit Block</h3>
+                    <p>Dept Of (CSE,EEE,ECE,AIDS,AIML),Computing laboratories, NCC And So On..</p>
+                    
+            
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Footer -->
+    <section id="last">
+        <div class="container">
+            <div id="powered" style="text-align:center;">
+                 <h2 style="color:var(--text-primary);margin:0 0 8px;font-size:16px;">Powered By</h2>
+                <img src="tech bros Logo.PNG" width="160" alt="Powered By" style="display:block;margin:0 auto 12px;">
+               
+                <p style="color:var(--text-secondary);margin:6px 0 4px;">Developed &amp; Designed By</p>
+                <p style="color:var(--text-secondary);font-weight:600;margin:0 0 6px;">AFRIDI MOHAMED J, ABILASH J, ABISHEK CHRISTOPHER R</p>
+                <p style="color:var(--text-secondary);margin:0 0 12px;">(Ist Year - CSE), K.Ramakrishnan College Of Technology (KRCT)</p>
+            </div>
+            <div class="foot" style="text-align:center;padding-top:12px;">
+                <h6>© 2026 All Rights Reserved.</h6>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Smooth scroll function
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Navigation links smooth scroll
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+                
+                // Update active state
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>

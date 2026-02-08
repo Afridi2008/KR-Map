@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KRCT - Campus Map</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-inner">
+            <div class="header-left">
+                <img src="KR map Logo.PNG" alt="KRCT Logo" class="logo-small" />
+            </div>
+            <div class="header-center">
+                <img src="logo.jpg" alt="Logo" class="logo-center" />
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <ul class="nav-menu">
+             <li><a href="home.html" class="nav-link active">Home</a></li>
+            <li><a href="about.html" class="nav-link">KRCT Campus</a></li>
+           
+            <li><a href="departments.html" class="nav-link">Blocks</a></li>
+             <li><a href="map.html" class="nav-link">Administrative  Block</a></li>
+            <li><a href="powered.html" class="nav-link">Powered By</a></li>
+        </ul>
+    </nav>
+
+
+    <!-- Building Map Section -->
+    <section class="map-section" id="map-section">
+        <div class="container">
+            <!-- Left Sidebar - Floor Navigation -->
+            <aside class="sidebar">
+                <h3>Admin Block Floors </h3>
+                <div class="floors">
+                   
+                    <button class="btn floors-btn" onclick="loadFloor('5')">⬆️ 5th Floor</button>
+                    <button class="btn floors-btn" onclick="loadFloor('4')">⬆️ 4th floor</button>
+                     <button class="btn floors-btn" onclick="loadFloor('3')">⬆️ 3rd floor</button>
+                      <button class="btn floors-btn" onclick="loadFloor('2')">⬆️ 2nd Floor</button>
+                       <button class="btn floors-btn" onclick="loadFloor('1')">⬆️ 1st Floor</button>
+                    <button class="btn floors-btn" onclick="loadFloor('G')">🌱 Ground Level</button>
+                </div>
+            </aside>
+
+            <!-- Main Content - Map Display -->
+            <main>
+                <div class="map-content">
+                    <h2 id="floor-title">Ground Level</h2>
+                    <!-- Zoom Controls -->
+                    <div class="map-controls">
+                        <button id="zoom-in-btn" class="zoom-btn" title="Zoom In">+</button>
+                        <button id="zoom-out-btn" class="zoom-btn" title="Zoom Out">−</button>
+                        <button id="reset-zoom-btn" class="zoom-btn" title="Reset Zoom">⟲</button>
+                    </div>
+                    <div class="map" id="map">
+                        <img src="ground.png" alt="Ground Floor" style="width: 100%; height: 100%; border-radius: 0px; object-fit: contain;">
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar removed (moved below as gallery) -->
+        </div>
+    </section>
+
+    <!-- Building Info Gallery (moved from right sidebar) -->
+    <section class="info-gallery-section">
+        <div class="info-gallery container">
+            <a href="GF.jpg" target="_blank" rel="noopener noreferrer"><img src="GF.jpg" alt="Ground Floor" class="gallery-item"></a>
+            <a href="01F.jpg" target="_blank" rel="noopener noreferrer"><img src="01F.jpg" alt="1st Floor" class="gallery-item"></a>
+            <a href="02F.jpg" target="_blank" rel="noopener noreferrer"><img src="02F.jpg" alt="2nd Floor" class="gallery-item"></a>
+            <a href="03F.jpg" target="_blank" rel="noopener noreferrer"><img src="03F.jpg" alt="3rd Floor" class="gallery-item"></a>
+            <a href="04F.jpg" target="_blank" rel="noopener noreferrer"><img src="04F.jpg" alt="4th Floor" class="gallery-item"></a>
+            <a href="05F.jpg" target="_blank" rel="noopener noreferrer"><img src="05F.jpg" alt="5th Floor" class="gallery-item"></a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <section id="last">
+        <div class="container">
+            <div id="powered" style="text-align:center;">
+                <h2 style="color:var(--text-primary);margin:0 0 8px;font-size:16px;">Powered By</h2>
+                <img src="tech bros Logo.PNG" width="160" alt="Powered By" style="display:block;margin:0 auto 12px;">
+                
+                <p style="color:var(--text-secondary);margin:6px 0 4px;">Developed &amp; Designed By</p>
+                <p style="color:var(--text-secondary);font-weight:600;margin:0 0 6px;">AFRIDI MOHAMED J, ABILASH J, ABISHEK CHRISTOPHER R</p>
+                <p style="color:var(--text-secondary);margin:0 0 12px;">(Ist Year - CSE), K.Ramakrishnan College Of Technology (KRCT)</p>
+            </div>
+            <div class="foot" style="text-align:center;padding-top:12px;">
+                <h6>© 2026 All Rights Reserved.</h6>
+            </div>
+        </div>
+    </section>
+
+    <script src="script.js"></script>
+    <script>
+        // Zoom state
+        let zoomLevel = 1;
+        const MIN_ZOOM = 1;
+        const MAX_ZOOM = 5;
+        const ZOOM_STEP = 0.2;
+        let isDragging = false;
+        let dragStartX = 0;
+        let dragStartY = 0;
+        let translateX = 0;
+        let translateY = 0;
+
+        // Get map and image elements
+        const mapElement = document.getElementById('map');
+        const mapImg = null; // Will be set when floor loads
+
+        // Zoom button event listeners
+        document.getElementById('zoom-in-btn').addEventListener('click', () => {
+            zoomLevel = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+            applyZoom();
+        });
+
+        document.getElementById('zoom-out-btn').addEventListener('click', () => {
+            zoomLevel = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+            applyZoom();
+        });
+
+        document.getElementById('reset-zoom-btn').addEventListener('click', () => {
+            zoomLevel = 1;
+            translateX = 0;
+            translateY = 0;
+            applyZoom();
+        });
+
+        // Apply zoom transformation
+        function applyZoom() {
+            const img = mapElement.querySelector('img');
+            if (img) {
+                img.style.transform = `scale(${zoomLevel}) translate(${translateX / zoomLevel}px, ${translateY / zoomLevel}px)`;
+                img.style.transformOrigin = 'center center';
+                img.style.transition = zoomLevel === 1 ? 'transform 0.2s ease' : 'none';
+            }
+        }
+
+        // Mouse wheel zoom
+        mapElement.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            if (e.deltaY < 0) {
+                zoomLevel = Math.min(zoomLevel + ZOOM_STEP, MAX_ZOOM);
+            } else {
+                zoomLevel = Math.max(zoomLevel - ZOOM_STEP, MIN_ZOOM);
+            }
+            applyZoom();
+        }, { passive: false });
+
+        // Mouse drag to pan
+        mapElement.addEventListener('mousedown', (e) => {
+            if (zoomLevel > 1) {
+                isDragging = true;
+                dragStartX = e.clientX - translateX;
+                dragStartY = e.clientY - translateY;
+                mapElement.style.cursor = 'grabbing';
+            }
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (isDragging && zoomLevel > 1) {
+                translateX = e.clientX - dragStartX;
+                translateY = e.clientY - dragStartY;
+                applyZoom();
+            }
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            mapElement.style.cursor = 'grab';
+        });
+
+        // Touch pinch zoom
+        let touchStartDistance = 0;
+        
+        mapElement.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                touchStartDistance = Math.sqrt(dx * dx + dy * dy);
+            } else if (e.touches.length === 1) {
+                dragStartX = e.touches[0].clientX - translateX;
+                dragStartY = e.touches[0].clientY - translateY;
+            }
+        });
+
+        mapElement.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            if (e.touches.length === 2) {
+                const dx = e.touches[0].clientX - e.touches[1].clientX;
+                const dy = e.touches[0].clientY - e.touches[1].clientY;
+                const touchDistance = Math.sqrt(dx * dx + dy * dy);
+                const delta = touchDistance - touchStartDistance;
+                
+                if (Math.abs(delta) > 5) {
+                    zoomLevel = Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, zoomLevel + (delta > 0 ? ZOOM_STEP : -ZOOM_STEP)));
+                    applyZoom();
+                    touchStartDistance = touchDistance;
+                }
+            } else if (e.touches.length === 1 && zoomLevel > 1) {
+                translateX = e.touches[0].clientX - dragStartX;
+                translateY = e.touches[0].clientY - dragStartY;
+                applyZoom();
+            }
+        }, { passive: false });
+
+        mapElement.addEventListener('touchend', () => {
+            touchStartDistance = 0;
+        });
+
+        // Update active floor button when floor is loaded
+        function loadFloor(floor) {
+            const floorImages = {
+                '5': '5.jpg',
+                '4': '4.jpg',
+                '3': '3.jpg',
+                '2': '2.jpg',
+                '1': '1.jpg',
+                'G': 'G.jpg',
+            };
+
+            const floorNames = {
+                '5': '5th Floor',
+                '4': '4th Floor',
+                '3': '3rd Floor',
+                '2': '2nd Floor',
+                '1': '1st Floor',
+                'G': 'Ground Floor',
+                '0': 'Campus'
+            };
+
+            document.getElementById('floor-title').textContent = floorNames[floor];
+            const mapContainer = document.getElementById('map');
+            mapContainer.innerHTML = '';
+            const img = document.createElement('img');
+            img.src = floorImages[floor];
+            img.style.maxWidth = '100%';
+            img.style.maxHeight = '100%';
+            img.style.padding = '0';
+            img.style.borderRadius = '0px';
+            img.style.objectFit = 'contain';
+            img.style.cursor = 'grab';
+            img.alt = floorNames[floor];
+            mapContainer.appendChild(img);
+
+            // Reset zoom when loading new floor
+            zoomLevel = 1;
+            translateX = 0;
+            translateY = 0;
+            applyZoom();
+
+            // Update active button
+            document.querySelectorAll('.floors-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Load ground floor on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            loadFloor('G');
+        });
+
+        // Navigation links
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (this.href.includes('#')) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const element = document.getElementById(targetId);
+                    if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' });
+                    }
+                    
+                    // Update active state
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    this.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
